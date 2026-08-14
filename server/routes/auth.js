@@ -27,16 +27,29 @@ router.get('/me', (req, res) => {
 
 // Login
 router.post('/login', (req, res) => {
-  const { email, role } = req.body;
+  const { email, password, role } = req.body;
   const users = db.get('users');
 
   let user = null;
-  if (email) {
-    user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-  }
-  if (!user && role) {
+  if (email && email.trim()) {
+    user = users.find(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'No account found with this email. Please sign up or check your spelling.'
+      });
+    }
+
+    if (password && user.password && user.password !== password) {
+      return res.status(401).json({
+        success: false,
+        message: 'Incorrect password. Please try again.'
+      });
+    }
+  } else if (role) {
     user = users.find(u => u.role === role);
   }
+
   if (!user) {
     user = users[0];
   }
@@ -60,21 +73,21 @@ router.post('/register', (req, res) => {
   const { name, email, password, role, institutionId, department, company, title } = req.body;
 
   if (!name || !email) {
-    return res.status(400).json({ success: false, message: 'Name and email are required' });
+    return res.status(400).json({ success: false, message: 'Full name and email are required' });
   }
 
-  const existing = db.get('users').find(u => u.email.toLowerCase() === email.toLowerCase());
+  const existing = db.get('users').find(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
   if (existing) {
-    return res.status(400).json({ success: false, message: 'An account with this email already exists' });
+    return res.status(400).json({ success: false, message: 'An account with this email already exists. Please sign in.' });
   }
 
   const inst = institutionId ? db.findById('institutions', institutionId) : null;
   const userRole = role || 'student';
 
   const newUser = db.insert('users', {
-    name,
-    email,
-    password: password || 'default123',
+    name: name.trim(),
+    email: email.trim().toLowerCase(),
+    password: password || 'password123',
     role: userRole,
     institutionId: institutionId || (inst ? inst.id : 'inst_1'),
     institutionName: inst ? inst.name : (company || 'Cluster Partner Institute'),

@@ -440,17 +440,35 @@ async function request(endpoint, options = {}) {
     });
 
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.message || `Request failed with status ${res.status}`);
     }
 
     return await res.json();
   } catch (err) {
+    // If it's a specific server error (e.g. invalid credentials), rethrow it so the UI shows the exact error message
+    if (err.message && !err.message.startsWith('Failed to fetch') && !err.message.startsWith('NetworkError') && !err.message.startsWith('HTTP')) {
+      throw err;
+    }
+
     // Graceful offline mock handling
     const db = getStore();
 
     if (endpoint.startsWith('/auth/login') && options.method === 'POST') {
-      const { email, role } = JSON.parse(options.body || '{}');
-      const user = db.users.find(u => (email && u.email.toLowerCase() === email.toLowerCase()) || (role && u.role === role)) || db.users[0];
+      const { email, password, role } = JSON.parse(options.body || '{}');
+      let user = null;
+      if (email && email.trim()) {
+        user = db.users.find(u => u.email && u.email.toLowerCase() === email.trim().toLowerCase());
+        if (!user) {
+          throw new Error('No account found with this email. Please sign up first.');
+        }
+        if (password && user.password && user.password !== password) {
+          throw new Error('Incorrect password. Please try again.');
+        }
+      } else if (role) {
+        user = db.users.find(u => u.role === role);
+      }
+      user = user || db.users[0];
       return { success: true, token: `token_${user.id}`, user, message: `Welcome back, ${user.name}!` };
     }
     if (endpoint.startsWith('/auth/register') && options.method === 'POST') {
@@ -458,12 +476,14 @@ async function request(endpoint, options = {}) {
       const inst = db.institutions.find(i => i.id === body.institutionId);
       const newUser = {
         id: `user_${Date.now()}`,
-        name: body.name,
-        email: body.email,
+        name: body.name.trim(),
+        email: body.email.trim().toLowerCase(),
+        password: body.password || 'password123',
         role: body.role || 'student',
         institutionId: body.institutionId || 'inst_1',
-        institutionName: inst ? inst.name : 'Partner College',
+        institutionName: inst ? inst.name : (body.company || 'Partner College'),
         department: body.department || 'Engineering',
+        company: body.role === 'industry' ? body.company : null,
         title: `${(body.role || 'student').toUpperCase()} | ${inst ? inst.code : 'SkillBridge'}`,
         cgpa: body.role === 'student' ? 9.0 : undefined,
         avatarImg: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80"

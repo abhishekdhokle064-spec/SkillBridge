@@ -66,10 +66,12 @@ export const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialRole 
       setLoading(true);
       const res = await api.login({
         email: loginEmail,
+        password: loginPassword,
         role: selectedRole
       });
 
       if (res.user) {
+        await refreshData();
         switchUser(res.user.id);
         setIsLandingView(false);
         if (res.user.role === 'institution') {
