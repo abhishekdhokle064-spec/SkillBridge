@@ -110,58 +110,62 @@ export const HackathonDemoBar = () => {
     <>
       {/* Floating Demo Launcher Button (Bottom Right) */}
       <div 
+        className="hackathon-floating-launcher"
         style={{
           position: 'fixed',
-          bottom: '24px',
-          right: '24px',
+          bottom: '20px',
+          right: '20px',
           zIndex: 990,
           display: 'flex',
           alignItems: 'center',
-          gap: '0.5rem'
+          gap: '0.5rem',
+          flexWrap: 'wrap'
         }}
       >
         <button
           onClick={() => setShowImpactModal(true)}
+          className="btn-impact-pill"
           style={{
             display: 'flex',
             alignItems: 'center',
             gap: '0.4rem',
-            padding: '0.65rem 1.1rem',
+            padding: '0.55rem 1rem',
             backgroundColor: '#0F172A',
             color: '#FFFFFF',
             border: '1px solid rgba(255, 255, 255, 0.15)',
             borderRadius: '9999px',
-            fontSize: '0.8125rem',
+            fontSize: '0.78rem',
             fontWeight: 700,
             cursor: 'pointer',
             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3)',
             backdropFilter: 'blur(8px)'
           }}
         >
-          <BarChart3 size={15} color="#34D399" />
-          <span>Hackathon Impact & ROI</span>
+          <BarChart3 size={14} color="#34D399" />
+          <span>Impact & ROI</span>
         </button>
 
         <button
           onClick={() => setIsOpen(!isOpen)}
+          className="btn-demo-pitch-pill"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.65rem 1.25rem',
+            gap: '0.4rem',
+            padding: '0.55rem 1.1rem',
             background: 'linear-gradient(135deg, #2563EB, #7C3AED)',
             color: '#FFFFFF',
             border: 'none',
             borderRadius: '9999px',
-            fontSize: '0.85rem',
+            fontSize: '0.8rem',
             fontWeight: 800,
             cursor: 'pointer',
             boxShadow: '0 10px 25px rgba(37, 99, 235, 0.45)',
             transition: 'transform 0.15s ease'
           }}
         >
-          <Zap size={16} fill="#FDE047" color="#FDE047" />
-          <span>⚡ Demo Pitch Mode</span>
+          <Zap size={15} fill="#FDE047" color="#FDE047" />
+          <span>⚡ Pitch Mode</span>
         </button>
       </div>
 

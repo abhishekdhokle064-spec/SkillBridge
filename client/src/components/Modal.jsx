@@ -23,13 +23,13 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = '560px' }) 
       style={{
         position: 'fixed',
         inset: 0,
-        backgroundColor: 'rgba(5, 8, 15, 0.75)',
+        backgroundColor: 'rgba(15, 23, 42, 0.75)',
         backdropFilter: 'blur(8px)',
         zIndex: 999,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '1rem',
+        padding: '0.75rem',
         animation: 'fadeIn 0.15s ease-out'
       }}
       onClick={onClose}
@@ -38,45 +38,48 @@ export const Modal = ({ isOpen, onClose, title, children, maxWidth = '560px' }) 
         style={{
           width: '100%',
           maxWidth,
-          background: '#111827',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--radius-lg)',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)',
+          backgroundColor: '#FFFFFF',
+          color: '#0F172A',
+          border: '1px solid #E2E8F0',
+          borderRadius: '16px',
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
           overflow: 'hidden',
           display: 'flex',
           flexDirection: 'column',
-          maxHeight: '90vh'
+          maxHeight: '92vh'
         }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div style={{
-          padding: '1.25rem 1.5rem',
-          borderBottom: '1px solid var(--border-subtle)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          background: 'rgba(30, 41, 59, 0.3)'
-        }}>
-          <h3 style={{ fontSize: '1.125rem', fontWeight: 700 }}>{title}</h3>
-          <button 
-            onClick={onClose}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: 'var(--text-secondary)',
-              cursor: 'pointer',
-              display: 'flex',
-              padding: '0.25rem',
-              borderRadius: 'var(--radius-sm)'
-            }}
-          >
-            <X size={20} />
-          </button>
-        </div>
+        {title && (
+          <div style={{
+            padding: '1.1rem 1.5rem',
+            borderBottom: '1px solid #F1F5F9',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: '#FAFAFA'
+          }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>{title}</h3>
+            <button 
+              onClick={onClose}
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#94A3B8',
+                cursor: 'pointer',
+                display: 'flex',
+                padding: '0.35rem',
+                borderRadius: '6px'
+              }}
+            >
+              <X size={20} />
+            </button>
+          </div>
+        )}
 
         {/* Body */}
-        <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
+        <div style={{ padding: '1.25rem 1.5rem', overflowY: 'auto' }}>
           {children}
         </div>
       </div>
