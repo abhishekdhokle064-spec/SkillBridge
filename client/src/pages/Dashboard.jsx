@@ -176,7 +176,7 @@ export const Dashboard = () => {
           <div className="kpi-details">
             <div className="kpi-title">Placements</div>
             <div className="kpi-number">0</div>
-            <div className="kpi-subtitle">This Year</div>
+            <div className="kpi-subtitle">0 Placements</div>
           </div>
         </div>
       </div>

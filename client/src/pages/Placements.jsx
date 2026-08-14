@@ -175,7 +175,7 @@ export const Placements = () => {
       {/* 4 Placement KPI Stat Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
-          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#8B5CF6' }}>342</div>
+          <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#8B5CF6' }}>0</div>
           <div style={{ fontSize: '0.8125rem', color: '#64748B', marginTop: '0.2rem' }}>Placements This Year</div>
         </div>
         <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
