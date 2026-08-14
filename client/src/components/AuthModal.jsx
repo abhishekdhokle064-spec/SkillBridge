@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialRole = 'student' }) => {
-  const { institutions, switchUser, showToast, triggerConfetti, setIsLandingView, setActiveTab, refreshData } = useApp();
+  const { institutions, switchUser, loginUser, showToast, triggerConfetti, setIsLandingView, setActiveTab, refreshData } = useApp();
   const [mode, setMode] = useState(initialMode); // 'login' | 'signup'
   const [selectedRole, setSelectedRole] = useState(initialRole);
   
@@ -71,8 +71,7 @@ export const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialRole 
       });
 
       if (res.user) {
-        await refreshData();
-        switchUser(res.user.id);
+        loginUser(res.user);
         setIsLandingView(false);
         if (res.user.role === 'institution') {
           setActiveTab('admin_dashboard');
@@ -110,8 +109,7 @@ export const AuthModal = ({ isOpen, onClose, initialMode = 'login', initialRole 
       });
 
       if (res.user) {
-        await refreshData();
-        switchUser(res.user.id);
+        loginUser(res.user);
         setIsLandingView(false);
         if (res.user.role === 'institution') {
           setActiveTab('admin_dashboard');

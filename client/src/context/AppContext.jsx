@@ -41,6 +41,21 @@ export const AppProvider = ({ children }) => {
     });
   };
 
+  const loginUser = (user) => {
+    if (!user) return;
+    setCurrentUser(user);
+    setUsers(prev => [user, ...prev.filter(u => u.id !== user.id)]);
+    localStorage.setItem('skillbridge_active_user_id', user.id);
+    localStorage.setItem('skillbridge_active_user_obj', JSON.stringify(user));
+  };
+
+  const logoutUser = () => {
+    localStorage.removeItem('skillbridge_active_user_obj');
+    localStorage.removeItem('skillbridge_active_user_id');
+    setIsLandingView(true);
+    showToast('Logged out successfully');
+  };
+
   const loadInitialData = async () => {
     try {
       setLoading(true);
@@ -55,11 +70,22 @@ export const AppProvider = ({ children }) => {
       setUsers(fetchedUsers);
       setInstitutions(fetchedInsts);
 
-      const savedUserId = localStorage.getItem('skillbridge_active_user_id') || fetchedUsers[0]?.id;
-      const initialUser = fetchedUsers.find(u => u.id === savedUserId) || fetchedUsers[0];
+      const savedUserObj = localStorage.getItem('skillbridge_active_user_obj');
+      let initialUser = null;
+      if (savedUserObj) {
+        try {
+          initialUser = JSON.parse(savedUserObj);
+        } catch (e) {}
+      }
+
+      if (!initialUser) {
+        const savedUserId = localStorage.getItem('skillbridge_active_user_id') || fetchedUsers[0]?.id;
+        initialUser = fetchedUsers.find(u => u.id === savedUserId) || fetchedUsers[0];
+      }
       
-      setCurrentUser(initialUser);
       if (initialUser) {
+        setCurrentUser(initialUser);
+        setUsers(prev => [initialUser, ...prev.filter(u => u.id !== initialUser.id)]);
         localStorage.setItem('skillbridge_active_user_id', initialUser.id);
       }
     } catch (err) {
@@ -76,8 +102,7 @@ export const AppProvider = ({ children }) => {
   const switchUser = (userId) => {
     const target = users.find(u => u.id === userId);
     if (target) {
-      setCurrentUser(target);
-      localStorage.setItem('skillbridge_active_user_id', target.id);
+      loginUser(target);
       showToast(`Switched active profile to ${target.name}`);
     }
   };
@@ -85,7 +110,7 @@ export const AppProvider = ({ children }) => {
   const switchRole = (role) => {
     const target = users.find(u => u.role === role);
     if (target) {
-      switchUser(target.id);
+      loginUser(target);
     }
   };
 
@@ -95,6 +120,9 @@ export const AppProvider = ({ children }) => {
         users,
         institutions,
         currentUser,
+        setCurrentUser,
+        loginUser,
+        logoutUser,
         loading,
         toast,
         showToast,

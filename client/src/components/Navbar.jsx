@@ -114,7 +114,7 @@ export const Navbar = () => {
               )}
             </div>
             <div className="user-info-text">
-              <div className="name">{currentUser?.name || 'Rahul Sharma'}</div>
+              <div className="name">{currentUser?.name || 'Guest Scholar'}</div>
               <div className="role" style={{ textTransform: 'capitalize' }}>
                 {currentUser?.role === 'institution' ? 'Institution Admin' : (currentUser?.role || 'Student')}
               </div>
