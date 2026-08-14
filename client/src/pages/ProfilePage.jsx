@@ -44,8 +44,8 @@ export const ProfilePage = () => {
     <div style={{ maxWidth: '800px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
       {/* Header Card */}
       <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '1.75rem', display: 'flex', alignItems: 'center', gap: '1.5rem', boxShadow: 'var(--shadow-sm)', flexWrap: 'wrap' }}>
-        <div style={{ width: '72px', height: '72px', borderRadius: '50%', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.25rem', overflow: 'hidden', border: '2px solid #BFDBFE' }}>
-          {currentUser?.avatarImg ? <img src={currentUser.avatarImg} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : '👨‍🎓'}
+        <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'linear-gradient(135deg, #2563EB, #0284C7)', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.5rem', fontWeight: 800, border: '3px solid #BFDBFE' }}>
+          {name ? name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() : 'U'}
         </div>
         <div>
           <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: '#0F172A', lineHeight: '1.2' }}>

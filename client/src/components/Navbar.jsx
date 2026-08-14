@@ -102,16 +102,10 @@ export const Navbar = () => {
             className="user-profile-widget"
             onClick={() => setShowRoleDropdown(!showRoleDropdown)}
           >
-            <div className="user-avatar-img">
-              {currentUser?.avatarImg ? (
-                <img 
-                  src={currentUser.avatarImg} 
-                  alt={currentUser.name} 
-                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} 
-                />
-              ) : (
-                currentUser?.avatar || '👨‍🎓'
-              )}
+            <div className="user-avatar-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #2563EB, #0284C7)', color: '#FFFFFF', fontWeight: 700, fontSize: '0.8rem', borderRadius: '50%' }}>
+              {currentUser?.name 
+                ? currentUser.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() 
+                : 'U'}
             </div>
             <div className="user-info-text">
               <div className="name">{currentUser?.name || 'Guest Scholar'}</div>
