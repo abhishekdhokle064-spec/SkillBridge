@@ -15,25 +15,30 @@ import {
   BookOpen, 
   CheckCircle2,
   Sparkles,
-  ChevronRight
+  ChevronRight,
+  Star,
+  MessageSquare
 } from 'lucide-react';
 
 export const Dashboard = () => {
   const { currentUser, setActiveTab, setSelectedResourceId } = useApp();
   const [resources, setResources] = useState([]);
   const [bookings, setBookings] = useState([]);
+  const [userReviews, setUserReviews] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [resData, bookData] = await Promise.all([
+        const [resData, bookData, revData] = await Promise.all([
           api.getResources(),
-          api.getBookings()
+          api.getBookings(),
+          api.getReviews({ userId: currentUser?.id || 'user_student_1' })
         ]);
         setResources(resData.data?.slice(0, 3) || []);
         setBookings(bookData.data || []);
+        setUserReviews(revData.data || []);
       } catch (err) {
         console.error('Failed to load dashboard data:', err);
       } finally {
@@ -228,47 +233,91 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        {/* Right 1/3: Upcoming Bookings */}
-        <div className="content-section-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-          <div>
-            <div className="section-header-flex">
-              <h2 className="section-title">Upcoming Bookings</h2>
+        {/* Right 1/3: Upcoming Bookings & My Reviews */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+          {/* Upcoming Bookings */}
+          <div className="content-section-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <div className="section-header-flex">
+                <h2 className="section-title">Upcoming Bookings</h2>
+                <span 
+                  onClick={() => setActiveTab('bookings')} 
+                  className="view-all-link"
+                >
+                  View All
+                </span>
+              </div>
+
+              <div className="upcoming-bookings-list">
+                {bookings.slice(0, 2).map((bk) => (
+                  <div key={bk.id} className="booking-item-row">
+                    <div className="booking-item-left">
+                      <div className="booking-icon-avatar">
+                        {bk.resourceTitle?.includes('Robotics') ? '🤖' : (bk.resourceTitle?.includes('Python') ? '🐍' : '🌐')}
+                      </div>
+                      <div>
+                        <div className="booking-name-title">{bk.resourceTitle}</div>
+                        <div className="booking-college-date">
+                          {bk.institutionName} • {bk.date}, {bk.timeSlot}
+                        </div>
+                      </div>
+                    </div>
+                    <span className={bk.status === 'Confirmed' ? 'status-pill-green' : 'status-pill-orange'}>
+                      {bk.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <button 
+              onClick={() => setActiveTab('bookings')}
+              className="btn-outline-full"
+              style={{ marginTop: '0.75rem' }}
+            >
+              View All Bookings
+            </button>
+          </div>
+
+          {/* My Reviews Card */}
+          <div style={{ backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '1.25rem', boxShadow: 'var(--shadow-sm)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                <Star size={16} color="#F59E0B" fill="#F59E0B" />
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, color: '#0F172A', margin: 0 }}>My Reviews</h3>
+              </div>
               <span 
-                onClick={() => setActiveTab('bookings')} 
-                className="view-all-link"
+                onClick={() => setActiveTab('reviews')} 
+                style={{ fontSize: '0.75rem', color: '#2563EB', fontWeight: 600, cursor: 'pointer' }}
               >
-                View All
+                View My Reviews
               </span>
             </div>
 
-            <div className="upcoming-bookings-list">
-              {bookings.slice(0, 3).map((bk) => (
-                <div key={bk.id} className="booking-item-row">
-                  <div className="booking-item-left">
-                    <div className="booking-icon-avatar">
-                      {bk.resourceTitle?.includes('Robotics') ? '🤖' : (bk.resourceTitle?.includes('Python') ? '🐍' : '🌐')}
-                    </div>
-                    <div>
-                      <div className="booking-name-title">{bk.resourceTitle}</div>
-                      <div className="booking-college-date">
-                        {bk.institutionName} • {bk.date}, {bk.timeSlot}
-                      </div>
-                    </div>
-                  </div>
-                  <span className={bk.status === 'Confirmed' ? 'status-pill-green' : 'status-pill-orange'}>
-                    {bk.status}
-                  </span>
-                </div>
-              ))}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', padding: '0.65rem 0.85rem', borderRadius: '8px', border: '1px solid #F1F5F9', marginBottom: '0.75rem' }}>
+              <div>
+                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#0F172A' }}>⭐ 4.9</div>
+                <div style={{ fontSize: '0.7rem', color: '#64748B' }}>Average Rating</div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: '1.15rem', fontWeight: 800, color: '#2563EB' }}>{userReviews.length || 3}</div>
+                <div style={{ fontSize: '0.7rem', color: '#64748B' }}>Reviews Given</div>
+              </div>
             </div>
-          </div>
 
-          <button 
-            onClick={() => setActiveTab('bookings')}
-            className="btn-outline-full"
-          >
-            View All Bookings
-          </button>
+            {userReviews.length > 0 && (
+              <div style={{ fontSize: '0.75rem', color: '#475569', backgroundColor: '#FFFBEB', border: '1px solid #FEF3C7', padding: '0.5rem 0.75rem', borderRadius: '6px', marginBottom: '0.75rem' }}>
+                <strong>Recent:</strong> "{userReviews[0].reviewText?.slice(0, 60)}..."
+              </div>
+            )}
+
+            <button 
+              onClick={() => setActiveTab('reviews')}
+              style={{ width: '100%', padding: '0.5rem', backgroundColor: '#EFF6FF', color: '#1D4ED8', border: '1px solid #BFDBFE', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
+            >
+              Manage My Reviews
+            </button>
+          </div>
         </div>
       </div>
 

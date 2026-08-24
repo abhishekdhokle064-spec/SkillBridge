@@ -25,6 +25,7 @@ app.use('/api/internships', require('./routes/internships'));
 app.use('/api/certifications', require('./routes/certifications'));
 app.use('/api/placements', require('./routes/placements'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/reviews', require('./routes/reviews'));
 
 // Health Endpoint
 app.get('/api/health', (req, res) => {

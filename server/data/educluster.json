@@ -491,6 +491,59 @@
   ],
   "resource_bookings": [
     {
+      "id": "bk_comp_3",
+      "resourceId": "res_5",
+      "resourceTitle": "Electric Vehicle Powertrain Dynamometer",
+      "institutionName": "Pune Institute of Computer Technology",
+      "institutionId": "inst_6",
+      "studentUserId": "user_student_1",
+      "studentName": "Rahul Sharma",
+      "studentInstitution": "GEC Nashik",
+      "date": "2025-08-18",
+      "timeSlot": "10:00 AM - 01:00 PM",
+      "purpose": "BMS telemetry CAN-bus validation under motor load",
+      "status": "Completed",
+      "attended": true,
+      "reviewed": false,
+      "createdAt": "2025-08-14T09:30:00.000Z"
+    },
+    {
+      "id": "bk_comp_2",
+      "resourceId": "res_2",
+      "resourceTitle": "AI & ML Lab",
+      "institutionName": "Visvesvaraya National Institute of Technology",
+      "institutionId": "inst_5",
+      "studentUserId": "user_student_1",
+      "studentName": "Rahul Sharma",
+      "studentInstitution": "GEC Nashik",
+      "date": "2025-08-12",
+      "timeSlot": "02:00 PM - 05:00 PM",
+      "purpose": "Distributed PyTorch model training on NVIDIA workstation",
+      "status": "Completed",
+      "attended": true,
+      "reviewed": true,
+      "reviewId": "rev_6",
+      "createdAt": "2025-08-08T11:00:00.000Z"
+    },
+    {
+      "id": "bk_comp_1",
+      "resourceId": "res_1",
+      "resourceTitle": "Robotics Lab",
+      "institutionName": "Government Engineering College, Nashik",
+      "institutionId": "inst_1",
+      "studentUserId": "user_student_1",
+      "studentName": "Rahul Sharma",
+      "studentInstitution": "GEC Nashik",
+      "date": "2025-08-05",
+      "timeSlot": "10:00 AM - 1:00 PM",
+      "purpose": "ROS2 trajectory calibration on ABB industrial arm",
+      "status": "Completed",
+      "attended": true,
+      "reviewed": true,
+      "reviewId": "rev_1",
+      "createdAt": "2025-08-01T10:00:00.000Z"
+    },
+    {
       "id": "bk_1",
       "resourceId": "res_1",
       "resourceTitle": "Robotics Lab",
@@ -1017,6 +1070,48 @@
       ],
       "badgeIcon": "🌐",
       "verifiedCount": 9
+    },
+    {
+      "id": "cert_4",
+      "certCode": "CLUSTER-CERT-5529-SEMI",
+      "title": "Cleanroom Nanofabrication & Bio-MEMS Specialist",
+      "issuerInstitutionId": "inst_3",
+      "issuerInstitutionName": "Vishwakarma Institute of Technology",
+      "recipientUserId": "user_student_3",
+      "recipientName": "Siddharth Deshmukh",
+      "recipientInstitution": "VJTI Mumbai",
+      "issueDate": "2025-08-02",
+      "expiryDate": "2028-08-02",
+      "grade": "Honors (Score: 96%)",
+      "skills": [
+        "Photolithography",
+        "Thin Film Deposition",
+        "Cleanroom Class 100",
+        "Micro-Sensors"
+      ],
+      "badgeIcon": "🔬",
+      "verifiedCount": 16
+    },
+    {
+      "id": "cert_5",
+      "certCode": "CLUSTER-CERT-9104-EV",
+      "title": "Autonomous EV Powertrain & CAN Telemetry Architect",
+      "issuerInstitutionId": "inst_6",
+      "issuerInstitutionName": "Pune Institute of Computer Technology",
+      "recipientUserId": "user_student_1",
+      "recipientName": "Rahul Sharma",
+      "recipientInstitution": "GEC Nashik",
+      "issueDate": "2025-08-10",
+      "expiryDate": "2028-08-10",
+      "grade": "Distinction (Score: 93%)",
+      "skills": [
+        "BMS Algorithms",
+        "CAN-bus Protocol",
+        "Simulink Powertrain",
+        "Vector CANoe"
+      ],
+      "badgeIcon": "🚗",
+      "verifiedCount": 11
     }
   ],
   "placement_drives": [
@@ -1205,6 +1300,369 @@
       "action": "OFFER_EXTENDED",
       "description": "Bosch Mobility extended placement offer of ₹22.0 LPA to Anjali Patil (COEP).",
       "timestamp": "2025-08-14T14:45:00.000Z"
+    }
+  ],
+  "reviews": [
+    {
+      "id": "rev_1",
+      "targetType": "resource",
+      "targetId": "res_1",
+      "targetTitle": "Robotics Lab",
+      "bookingId": "bk_comp_1",
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "Superb industrial ABB 6-DOF arm setup! Tested my ROS2 inverse kinematics trajectory and the controller feedback was instantaneous. Special thanks to Dr. Joshi for hands-on guidance on gripper payload limits.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 14,
+      "helpfulUsers": [
+        "user_student_2",
+        "user_student_3"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-06T14:30:00.000Z",
+      "updatedAt": "2025-08-06T14:30:00.000Z"
+    },
+    {
+      "id": "rev_2",
+      "targetType": "resource",
+      "targetId": "res_1",
+      "targetTitle": "Robotics Lab",
+      "bookingId": null,
+      "userId": "user_student_2",
+      "userName": "Anjali Patil",
+      "userAvatar": "👩‍🎓",
+      "userInstitution": "COEP Pune",
+      "rating": 5,
+      "reviewText": "Cross-campus access via cluster MOU is a game changer! We did not have this specific 3D-CNC hybrid cell at our department, so booking this 3-hour slot enabled us to finish our quadcopter chassis prototype ahead of schedule.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 9,
+      "helpfulUsers": [
+        "user_student_1"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-08T10:15:00.000Z",
+      "updatedAt": "2025-08-08T10:15:00.000Z"
+    },
+    {
+      "id": "rev_3",
+      "targetType": "resource",
+      "targetId": "res_1",
+      "targetTitle": "Robotics Lab",
+      "bookingId": null,
+      "userId": "user_student_3",
+      "userName": "Siddharth Deshmukh",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "VJTI Mumbai",
+      "rating": 4,
+      "reviewText": "Excellent equipment quality and very clean workspace. Calibration on the ROS serial bridge took 10 minutes to sync with Jetson, but overall infrastructure and staff support are top-tier.",
+      "categoryRatings": {
+        "facilityQuality": 4,
+        "staffSupport": 5,
+        "learningExp": 4,
+        "infrastructure": 4
+      },
+      "verified": true,
+      "helpfulCount": 6,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-10T16:00:00.000Z",
+      "updatedAt": "2025-08-10T16:00:00.000Z"
+    },
+    {
+      "id": "rev_4",
+      "targetType": "resource",
+      "targetId": "res_1",
+      "targetTitle": "Robotics Lab",
+      "bookingId": null,
+      "userId": "user_student_4",
+      "userName": "Sneha Kulkarni",
+      "userAvatar": "👩‍🎓",
+      "userInstitution": "VIT Pune",
+      "rating": 5,
+      "reviewText": "Very smooth slot booking experience. Facility quality is 5/5, clean environment, safety goggles provided, and the lab staff assisted us with emergency stop safety protocols.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 4,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-12T11:45:00.000Z",
+      "updatedAt": "2025-08-12T11:45:00.000Z"
+    },
+    {
+      "id": "rev_5",
+      "targetType": "resource",
+      "targetId": "res_1",
+      "targetTitle": "Robotics Lab",
+      "bookingId": null,
+      "userId": "user_student_5",
+      "userName": "Rohan Gupta",
+      "userAvatar": "👨‍💻",
+      "userInstitution": "PICT Pune",
+      "rating": 4,
+      "reviewText": "Great microcontrollers kit and 3D printing setup. Highly recommended for any mini or capstone project prototypes.",
+      "categoryRatings": {
+        "facilityQuality": 4,
+        "staffSupport": 4,
+        "learningExp": 5,
+        "infrastructure": 4
+      },
+      "verified": true,
+      "helpfulCount": 2,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-14T09:20:00.000Z",
+      "updatedAt": "2025-08-14T09:20:00.000Z"
+    },
+    {
+      "id": "rev_6",
+      "targetType": "resource",
+      "targetId": "res_2",
+      "targetTitle": "AI & ML Lab",
+      "bookingId": "bk_comp_2",
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "Top tier GPU nodes. Running distributed PyTorch vision transformers completed in under 40 minutes instead of overnight on local laptops.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 11,
+      "helpfulUsers": [
+        "user_student_2"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-13T18:00:00.000Z",
+      "updatedAt": "2025-08-13T18:00:00.000Z"
+    },
+    {
+      "id": "rev_7",
+      "targetType": "resource",
+      "targetId": "res_2",
+      "targetTitle": "AI & ML Lab",
+      "bookingId": null,
+      "userId": "user_student_2",
+      "userName": "Anjali Patil",
+      "userAvatar": "👩‍🎓",
+      "userInstitution": "COEP Pune",
+      "rating": 5,
+      "reviewText": "Seamless cluster environment! CUDA libraries and PyTorch 2.4 were pre-configured with Slurm job scheduler.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 8,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-14T14:10:00.000Z",
+      "updatedAt": "2025-08-14T14:10:00.000Z"
+    },
+    {
+      "id": "rev_8",
+      "targetType": "resource",
+      "targetId": "res_3",
+      "targetTitle": "Supercomputing GPU Cluster",
+      "bookingId": null,
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "National-grade supercomputing nodes. NVIDIA A100 SXM4 interconnect speeds were mindblowing. Co-validated by cluster MoU.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 18,
+      "helpfulUsers": [
+        "user_student_2",
+        "user_student_3"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-01T12:00:00.000Z",
+      "updatedAt": "2025-08-01T12:00:00.000Z"
+    },
+    {
+      "id": "rev_9",
+      "targetType": "resource",
+      "targetId": "res_4",
+      "targetTitle": "Cleanroom Micro-Fabrication Lab",
+      "bookingId": null,
+      "userId": "user_student_3",
+      "userName": "Siddharth Deshmukh",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "VJTI Mumbai",
+      "rating": 5,
+      "reviewText": "Class 100 cleanroom standards maintained meticulously. Mask aligner photolithography precision is unmatched.",
+      "categoryRatings": {
+        "facilityQuality": 5,
+        "staffSupport": 5,
+        "learningExp": 5,
+        "infrastructure": 5
+      },
+      "verified": true,
+      "helpfulCount": 12,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-04T15:30:00.000Z",
+      "updatedAt": "2025-08-04T15:30:00.000Z"
+    },
+    {
+      "id": "rev_10",
+      "targetType": "course",
+      "targetId": "crs_1",
+      "targetTitle": "IoT & Embedded Systems",
+      "bookingId": null,
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "Prof. Ananya Sen explained ESP32 FreeRTOS tasks and LoRaWAN mesh gateways with phenomenal clarity. Real hardware telemetry projects!",
+      "categoryRatings": {
+        "instructorRating": 5,
+        "learningExp": 5,
+        "courseContent": 5
+      },
+      "verified": true,
+      "helpfulCount": 15,
+      "helpfulUsers": [
+        "user_student_2"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-11T16:20:00.000Z",
+      "updatedAt": "2025-08-11T16:20:00.000Z"
+    },
+    {
+      "id": "rev_11",
+      "targetType": "course",
+      "targetId": "crs_1",
+      "targetTitle": "IoT & Embedded Systems",
+      "bookingId": null,
+      "userId": "user_student_2",
+      "userName": "Anjali Patil",
+      "userAvatar": "👩‍🎓",
+      "userInstitution": "COEP Pune",
+      "rating": 5,
+      "reviewText": "Hands-on practical code walkthroughs. The lab assignments helped me prepare for my hardware engineering interviews.",
+      "categoryRatings": {
+        "instructorRating": 5,
+        "learningExp": 5,
+        "courseContent": 5
+      },
+      "verified": true,
+      "helpfulCount": 8,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-12T10:00:00.000Z",
+      "updatedAt": "2025-08-12T10:00:00.000Z"
+    },
+    {
+      "id": "rev_12",
+      "targetType": "course",
+      "targetId": "crs_2",
+      "targetTitle": "ROS2 Autonomous Navigation & SLAM",
+      "bookingId": null,
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "Dr. Joshi live Gazebo simulations and Nav2 costmap tuning workshops are gold standard for robotics engineers!",
+      "categoryRatings": {
+        "instructorRating": 5,
+        "learningExp": 5,
+        "courseContent": 5
+      },
+      "verified": true,
+      "helpfulCount": 12,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-15T17:40:00.000Z",
+      "updatedAt": "2025-08-15T17:40:00.000Z"
+    },
+    {
+      "id": "rev_13",
+      "targetType": "internship",
+      "targetId": "int_3",
+      "targetTitle": "Embedded Systems Intern",
+      "bookingId": null,
+      "userId": "user_student_1",
+      "userName": "Rahul Sharma",
+      "userAvatar": "👨‍🎓",
+      "userInstitution": "GEC Nashik",
+      "rating": 5,
+      "reviewText": "Working on steer-by-wire firmware with Bosch senior architects was an extraordinary learning journey. Hands-on real production CANoe dyno testing!",
+      "categoryRatings": {
+        "workExp": 5,
+        "learningExp": 5,
+        "mentorship": 5,
+        "overall": 5
+      },
+      "verified": true,
+      "helpfulCount": 16,
+      "helpfulUsers": [
+        "user_student_2"
+      ],
+      "status": "active",
+      "createdAt": "2025-08-16T11:00:00.000Z",
+      "updatedAt": "2025-08-16T11:00:00.000Z"
+    },
+    {
+      "id": "rev_14",
+      "targetType": "internship",
+      "targetId": "int_1",
+      "targetTitle": "Software Engineering Intern",
+      "bookingId": null,
+      "userId": "user_student_2",
+      "userName": "Anjali Patil",
+      "userAvatar": "👩‍🎓",
+      "userInstitution": "COEP Pune",
+      "rating": 5,
+      "reviewText": "Great corporate mentorship and real-time cloud deployment pipelines. Strong cluster placement support!",
+      "categoryRatings": {
+        "workExp": 5,
+        "learningExp": 5,
+        "mentorship": 5,
+        "overall": 5
+      },
+      "verified": true,
+      "helpfulCount": 10,
+      "helpfulUsers": [],
+      "status": "active",
+      "createdAt": "2025-08-17T15:20:00.000Z",
+      "updatedAt": "2025-08-17T15:20:00.000Z"
     }
   ]
 }

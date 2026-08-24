@@ -20,7 +20,8 @@ let dbState = {
   certifications: [],
   placement_drives: [],
   placement_candidates: [],
-  activity_logs: []
+  activity_logs: [],
+  reviews: []
 };
 
 // Load database from file

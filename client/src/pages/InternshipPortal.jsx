@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
 import { Modal } from '../components/Modal';
+import { ReviewModal } from '../components/ReviewModal';
+import { ReviewCard } from '../components/ReviewCard';
+import { StarRating } from '../components/StarRating';
 import { 
   Briefcase, 
   Search, 
@@ -11,7 +14,9 @@ import {
   Building2, 
   CheckCircle2, 
   Send,
-  Sparkles
+  Sparkles,
+  Star,
+  MessageSquare
 } from 'lucide-react';
 
 export const InternshipPortal = () => {
@@ -21,6 +26,12 @@ export const InternshipPortal = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [applyingJob, setApplyingJob] = useState(null);
   const [resumeLink, setResumeLink] = useState('https://drive.google.com/rahul_sharma_portfolio.pdf');
+
+  // Reviews State
+  const [reviewInternship, setReviewInternship] = useState(null);
+  const [showInternshipReviewModal, setShowInternshipReviewModal] = useState(false);
+  const [viewingReviewsJob, setViewingReviewsJob] = useState(null);
+  const [jobReviews, setJobReviews] = useState([]);
 
   useEffect(() => {
     const fetchInternships = async () => {
@@ -139,6 +150,26 @@ export const InternshipPortal = () => {
                 <span>{item.location}</span>
               </div>
 
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', color: '#D97706', fontWeight: 700 }}>
+                  <Star size={14} color="#F59E0B" fill="#F59E0B" />
+                  <span>{item.id === 'int_1' ? '4.8' : (item.id === 'int_3' ? '5.0' : '4.9')}</span>
+                  <span style={{ color: '#64748B', fontWeight: 500 }}>
+                    ({item.id === 'int_1' ? '14' : (item.id === 'int_3' ? '16' : '10')} Alumni Reviews)
+                  </span>
+                </div>
+                <button
+                  onClick={async () => {
+                    const res = await api.getReviews({ targetType: 'internship', targetId: item.id });
+                    setJobReviews(res.data || []);
+                    setViewingReviewsJob(item);
+                  }}
+                  style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.72rem', fontWeight: 600, cursor: 'pointer', textDecoration: 'underline' }}
+                >
+                  View Reviews
+                </button>
+              </div>
+
               {/* Skills Chips */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '0.85rem' }}>
                 {item.skills?.map((sk, idx) => (
@@ -154,12 +185,21 @@ export const InternshipPortal = () => {
               </div>
             </div>
 
-            <button 
-              onClick={() => setApplyingJob(item)}
-              style={{ width: '100%', padding: '0.6rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)' }}
-            >
-              Apply Now
-            </button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: '0.5rem' }}>
+              <button 
+                onClick={() => { setReviewInternship(item); setShowInternshipReviewModal(true); }}
+                style={{ padding: '0.55rem', backgroundColor: '#FFFBEB', color: '#B45309', border: '1px solid #FDE68A', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.25rem' }}
+              >
+                <Star size={13} fill="#F59E0B" color="#F59E0B" />
+                <span>Rate</span>
+              </button>
+              <button 
+                onClick={() => setApplyingJob(item)}
+                style={{ padding: '0.55rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)' }}
+              >
+                Apply Now
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -200,6 +240,60 @@ export const InternshipPortal = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Viewing Internship Alumni Reviews Modal */}
+      <Modal
+        isOpen={Boolean(viewingReviewsJob)}
+        onClose={() => setViewingReviewsJob(null)}
+        title={`Alumni Reviews: ${viewingReviewsJob?.companyName} - ${viewingReviewsJob?.title}`}
+        maxWidth="620px"
+      >
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#F8FAFC', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+            <div>
+              <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0F172A' }}>Verified Internship Reviews</div>
+              <div style={{ fontSize: '0.75rem', color: '#64748B' }}>Real feedback from cluster scholars who completed this internship.</div>
+            </div>
+            <button
+              onClick={() => {
+                const job = viewingReviewsJob;
+                setViewingReviewsJob(null);
+                setReviewInternship(job);
+                setShowInternshipReviewModal(true);
+              }}
+              style={{ padding: '0.4rem 0.85rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, cursor: 'pointer' }}
+            >
+              + Write Review
+            </button>
+          </div>
+
+          {jobReviews.length === 0 ? (
+            <div style={{ padding: '2rem', textAlign: 'center', color: '#64748B' }}>
+              <p style={{ margin: 0, fontSize: '0.875rem' }}>No reviews yet for this position.</p>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.85rem', maxHeight: '420px', overflowY: 'auto' }}>
+              {jobReviews.map(r => (
+                <ReviewCard key={r.id} review={r} />
+              ))}
+            </div>
+          )}
+        </div>
+      </Modal>
+
+      {/* Internship Review Modal */}
+      {reviewInternship && (
+        <ReviewModal
+          isOpen={showInternshipReviewModal}
+          onClose={() => { setShowInternshipReviewModal(false); setReviewInternship(null); }}
+          targetType="internship"
+          targetId={reviewInternship.id}
+          targetTitle={`${reviewInternship.companyName} - ${reviewInternship.title}`}
+          onReviewSubmitted={() => {
+            showToast('Internship review submitted successfully!');
+          }}
+        />
+      )}
     </div>
   );
 };

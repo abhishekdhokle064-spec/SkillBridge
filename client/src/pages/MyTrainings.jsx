@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
 import { Modal } from '../components/Modal';
+import { ReviewModal } from '../components/ReviewModal';
+import { StarRating } from '../components/StarRating';
 import { 
   BookOpen, 
   Video, 
@@ -16,7 +18,8 @@ import {
   GraduationCap,
   Sparkles,
   ExternalLink,
-  Search
+  Search,
+  MessageSquare
 } from 'lucide-react';
 
 export const MyTrainings = () => {
@@ -25,6 +28,10 @@ export const MyTrainings = () => {
   const [trainers, setTrainers] = useState([]);
   const [activeTab, setActiveTab] = useState('courses'); // 'courses' | 'masterclasses' | 'trainers'
   const [loading, setLoading] = useState(true);
+
+  // Review Modal State
+  const [reviewCourse, setReviewCourse] = useState(null);
+  const [showCourseReviewModal, setShowCourseReviewModal] = useState(false);
 
   // Live Classroom Modal State
   const [liveClassModal, setLiveClassModal] = useState(null);
@@ -54,6 +61,9 @@ export const MyTrainings = () => {
       progress: 65,
       modulesCount: "8 of 12 Modules Completed",
       instructor: "Prof. Ananya Sen",
+      rating: 4.8,
+      reviewsCount: 128,
+      isCompleted: false,
       imageUrl: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&auto=format&fit=crop&q=80"
     },
     {
@@ -64,7 +74,23 @@ export const MyTrainings = () => {
       progress: 40,
       modulesCount: "4 of 10 Modules Completed",
       instructor: "Dr. K. R. Joshi",
+      rating: 4.9,
+      reviewsCount: 94,
+      isCompleted: false,
       imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=600&auto=format&fit=crop&q=80"
+    },
+    {
+      id: "crs_3",
+      title: "GPU Accelerated Deep Learning & TensorRT",
+      provider: "Visvesvaraya National Institute of Technology",
+      startsAt: "01 Aug 2025",
+      progress: 100,
+      modulesCount: "10 of 10 Modules Completed",
+      instructor: "Dr. Arvind Rao",
+      rating: 5.0,
+      reviewsCount: 156,
+      isCompleted: true,
+      imageUrl: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&auto=format&fit=crop&q=80"
     }
   ];
 
@@ -237,8 +263,23 @@ export const MyTrainings = () => {
                   </div>
 
                   <div style={{ padding: '1.25rem' }}>
-                    <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.25rem' }}>{crs.title}</h3>
-                    <div style={{ fontSize: '0.8125rem', color: '#2563EB', fontWeight: 600, marginBottom: '0.75rem' }}>{crs.provider}</div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                      <div>
+                        <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#0F172A', marginBottom: '0.2rem' }}>{crs.title}</h3>
+                        <div style={{ fontSize: '0.8125rem', color: '#2563EB', fontWeight: 600 }}>{crs.provider}</div>
+                      </div>
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', margin: '0.5rem 0 0.85rem', fontSize: '0.8125rem', color: '#D97706', fontWeight: 700 }}>
+                      <Star size={15} color="#F59E0B" fill="#F59E0B" />
+                      <span>{crs.rating}</span>
+                      <span style={{ color: '#64748B', fontWeight: 500 }}>({crs.reviewsCount} Reviews)</span>
+                      {crs.isCompleted && (
+                        <span style={{ marginLeft: 'auto', backgroundColor: '#ECFDF5', color: '#059669', fontSize: '0.7rem', fontWeight: 700, padding: '0.15rem 0.5rem', borderRadius: '9999px', border: '1px solid #A7F3D0' }}>
+                          ✓ Completed
+                        </span>
+                      )}
+                    </div>
 
                     <div style={{ marginBottom: '1rem' }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748B', marginBottom: '0.35rem' }}>
@@ -246,7 +287,7 @@ export const MyTrainings = () => {
                         <strong>{crs.modulesCount}</strong>
                       </div>
                       <div style={{ width: '100%', height: '8px', backgroundColor: '#F1F5F9', borderRadius: '9999px', overflow: 'hidden' }}>
-                        <div style={{ width: `${crs.progress}%`, height: '100%', backgroundColor: '#2563EB', borderRadius: '9999px' }} />
+                        <div style={{ width: `${crs.progress}%`, height: '100%', backgroundColor: crs.isCompleted ? '#10B981' : '#2563EB', borderRadius: '9999px' }} />
                       </div>
                     </div>
 
@@ -256,15 +297,36 @@ export const MyTrainings = () => {
                   </div>
                 </div>
 
-                <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: 600 }}>● Live Lab Workstations Active</span>
-                  <button 
-                    onClick={() => handleOpenLiveClass(crs)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.55rem 1.1rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)' }}
-                  >
-                    <Play size={13} fill="#FFFFFF" />
-                    <span>Continue Learning</span>
-                  </button>
+                <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid #F1F5F9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {crs.isCompleted ? (
+                    <>
+                      <span style={{ fontSize: '0.75rem', color: '#059669', fontWeight: 700 }}>● Certificate Earned</span>
+                      <button 
+                        onClick={() => { setReviewCourse(crs); setShowCourseReviewModal(true); }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', padding: '0.5rem 1rem', backgroundColor: '#FFFBEB', color: '#B45309', border: '1px solid #FDE68A', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 700, cursor: 'pointer' }}
+                      >
+                        <Star size={14} fill="#F59E0B" color="#F59E0B" />
+                        <span>Rate this Course</span>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button 
+                        onClick={() => { setReviewCourse(crs); setShowCourseReviewModal(true); }}
+                        style={{ background: 'none', border: 'none', color: '#2563EB', fontSize: '0.78rem', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}
+                      >
+                        <Star size={13} />
+                        <span>Reviews</span>
+                      </button>
+                      <button 
+                        onClick={() => handleOpenLiveClass(crs)}
+                        style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', padding: '0.55rem 1.1rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)' }}
+                      >
+                        <Play size={13} fill="#FFFFFF" />
+                        <span>Continue Learning</span>
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             ))}
@@ -478,6 +540,20 @@ export const MyTrainings = () => {
           </div>
         </form>
       </Modal>
+
+      {/* Course Review Modal */}
+      {reviewCourse && (
+        <ReviewModal
+          isOpen={showCourseReviewModal}
+          onClose={() => { setShowCourseReviewModal(false); setReviewCourse(null); }}
+          targetType="course"
+          targetId={reviewCourse.id}
+          targetTitle={reviewCourse.title}
+          onReviewSubmitted={() => {
+            showToast('Course rating and review submitted!');
+          }}
+        />
+      )}
     </div>
   );
 };

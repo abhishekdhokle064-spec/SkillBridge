@@ -609,4 +609,16 @@ export const api = {
 
   getAnalyticsOverview: () => request('/analytics/overview'),
   resetSeed: () => request('/analytics/reset-seed', { method: 'POST' }),
+
+  // Review & Rating System API
+  getReviews: (params = {}) => {
+    const qs = new URLSearchParams(params).toString();
+    return request(`/reviews${qs ? '?' + qs : ''}`);
+  },
+  getReviewById: (id) => request(`/reviews/${id}`),
+  createReview: (data) => request('/reviews', { method: 'POST', body: JSON.stringify(data) }),
+  updateReview: (id, data) => request(`/reviews/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+  deleteReview: (id) => request(`/reviews/${id}`, { method: 'DELETE' }),
+  toggleHelpful: (id, userId) => request(`/reviews/${id}/helpful`, { method: 'POST', body: JSON.stringify({ userId }) }),
+  moderateReview: (id, data) => request(`/reviews/${id}/moderate`, { method: 'PATCH', body: JSON.stringify(data) }),
 };

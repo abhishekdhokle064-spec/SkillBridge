@@ -17,7 +17,8 @@ import {
   Filter,
   Image as ImageIcon,
   Wrench,
-  Check
+  Check,
+  Star
 } from 'lucide-react';
 
 export const Resources = () => {
@@ -391,9 +392,22 @@ export const Resources = () => {
                         {res.title}
                       </h3>
 
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8125rem', color: '#2563EB', fontWeight: 600, marginBottom: '0.75rem' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.8125rem', color: '#2563EB', fontWeight: 600, marginBottom: '0.5rem' }}>
                         <MapPin size={14} />
                         <span>{res.institutionName} • {res.location}</span>
+                      </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', fontWeight: 700, color: '#D97706' }}>
+                          <Star size={15} color="#F59E0B" fill="#F59E0B" />
+                          <span>{res.id === 'res_1' ? '4.8' : (res.id === 'res_2' ? '4.9' : (res.id === 'res_3' ? '5.0' : '4.7'))}</span>
+                          <span style={{ fontSize: '0.75rem', color: '#64748B', fontWeight: 500 }}>
+                            ({res.id === 'res_1' ? '5' : (res.id === 'res_2' ? '4' : (res.id === 'res_3' ? '3' : '2'))} Reviews)
+                          </span>
+                        </div>
+                        <span style={{ fontSize: '0.7rem', color: '#059669', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '9999px', padding: '0.1rem 0.45rem', fontWeight: 600 }}>
+                          Verified Lab
+                        </span>
                       </div>
 
                       <p style={{ fontSize: '0.8125rem', color: '#64748B', lineHeight: '1.4', marginBottom: '0.85rem' }}>
@@ -408,18 +422,27 @@ export const Resources = () => {
                     </div>
                   </div>
 
-                  <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid #F1F5F9', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
-                    <button 
-                      onClick={() => handleOpenDetail(res.id)}
-                      style={{ padding: '0.6rem', backgroundColor: '#F8FAFC', border: '1px solid #CBD5E1', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, color: '#334155', cursor: 'pointer' }}
-                    >
-                      View Details
-                    </button>
+                  <div style={{ padding: '1rem 1.25rem', borderTop: '1px solid #F1F5F9', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                      <button 
+                        onClick={() => handleOpenDetail(res.id)}
+                        style={{ padding: '0.55rem', backgroundColor: '#F8FAFC', border: '1px solid #CBD5E1', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 600, color: '#334155', cursor: 'pointer' }}
+                      >
+                        View Details
+                      </button>
+                      <button 
+                        onClick={() => handleOpenDetail(res.id)}
+                        style={{ padding: '0.55rem', backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '6px', fontSize: '0.8rem', fontWeight: 700, color: '#B45309', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.3rem' }}
+                      >
+                        <Star size={13} fill="#F59E0B" color="#F59E0B" />
+                        <span>View Reviews</span>
+                      </button>
+                    </div>
                     <button 
                       onClick={() => setBookingResource(res)}
-                      style={{ padding: '0.6rem', backgroundColor: '#2563EB', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, color: '#FFFFFF', cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)' }}
+                      style={{ width: '100%', padding: '0.6rem', backgroundColor: '#2563EB', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 700, color: '#FFFFFF', cursor: 'pointer', boxShadow: '0 2px 8px rgba(37, 99, 235, 0.25)' }}
                     >
-                      Book Now
+                      Book Facility Slot
                     </button>
                   </div>
                 </div>

@@ -16,6 +16,7 @@ import { MyTrainings } from './pages/MyTrainings';
 import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { MessagesPage } from './pages/MessagesPage';
+import { ReviewsPage } from './pages/ReviewsPage';
 import { HackathonDemoBar } from './components/HackathonDemoBar';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -74,6 +75,8 @@ export default function App() {
         return <Placements />;
       case 'certificates':
         return <Certifications />;
+      case 'reviews':
+        return <ReviewsPage />;
       case 'messages':
         return <MessagesPage />;
       case 'notifications':

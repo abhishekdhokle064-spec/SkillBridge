@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useApp } from '../context/AppContext';
 import { api } from '../services/api';
+import { ReviewCard } from '../components/ReviewCard';
+import { ReviewModal } from '../components/ReviewModal';
+import { ReviewSummary } from '../components/ReviewSummary';
+import { StarRating } from '../components/StarRating';
 import { 
   ArrowLeft, 
   MapPin, 
@@ -12,7 +16,9 @@ import {
   Cpu, 
   User, 
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  Plus,
+  MessageSquare
 } from 'lucide-react';
 
 export const ResourceDetail = () => {
@@ -21,11 +27,41 @@ export const ResourceDetail = () => {
   const [activeSubTab, setActiveSubTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
+  // Reviews State
+  const [reviews, setReviews] = useState([]);
+  const [reviewStats, setReviewStats] = useState({
+    averageRating: 4.8,
+    totalReviews: 0,
+    ratingDistribution: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
+    categoryAverages: { facilityQuality: 4.8, staffSupport: 4.7, learningExp: 4.9, infrastructure: 4.8 }
+  });
+  const [ratingFilter, setRatingFilter] = useState('all');
+  const [sortMode, setSortMode] = useState('recent');
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [editingReview, setEditingReview] = useState(null);
+
   // Booking Form State
   const [bookingDate, setBookingDate] = useState('2025-08-10');
   const [bookingTimeSlot, setBookingTimeSlot] = useState('10:00 AM - 1:00 PM');
   const [bookingPurpose, setBookingPurpose] = useState('Hands-on learning for Mini Project');
   const [submitting, setSubmitting] = useState(false);
+
+  const fetchReviews = async (resourceId) => {
+    try {
+      const res = await api.getReviews({
+        targetType: 'resource',
+        targetId: resourceId,
+        rating: ratingFilter !== 'all' ? ratingFilter : undefined,
+        sort: sortMode
+      });
+      setReviews(res.data || []);
+      if (res.stats) {
+        setReviewStats(res.stats);
+      }
+    } catch (err) {
+      console.error('Error fetching resource reviews:', err);
+    }
+  };
 
   useEffect(() => {
     const fetchDetail = async () => {
@@ -35,6 +71,9 @@ export const ResourceDetail = () => {
         const list = res.data || [];
         const found = list.find(r => r.id === selectedResourceId) || list[0];
         setResource(found);
+        if (found) {
+          await fetchReviews(found.id);
+        }
       } catch (err) {
         console.error(err);
       } finally {
@@ -42,7 +81,7 @@ export const ResourceDetail = () => {
       }
     };
     fetchDetail();
-  }, [selectedResourceId]);
+  }, [selectedResourceId, ratingFilter, sortMode]);
 
   const handleConfirmBooking = async (e) => {
     e.preventDefault();
@@ -108,73 +147,65 @@ export const ResourceDetail = () => {
 
           {/* Sub Navigation Tabs */}
           <div style={{ display: 'flex', gap: '1.5rem', borderBottom: '1px solid #E2E8F0', marginBottom: '1.25rem', fontSize: '0.875rem', fontWeight: 600 }}>
-            {['overview', 'equipment', 'trainer', 'reviews'].map((tab) => (
+            {[
+              { id: 'overview', label: 'Overview' },
+              { id: 'equipment', label: 'Equipment & Specs' },
+              { id: 'trainer', label: 'In-Charge Faculty' },
+              { id: 'reviews', label: `Reviews & Ratings (${reviewStats.totalReviews})` }
+            ].map((tab) => (
               <span
-                key={tab}
-                onClick={() => setActiveSubTab(tab)}
+                key={tab.id}
+                onClick={() => setActiveSubTab(tab.id)}
                 style={{
                   paddingBottom: '0.65rem',
-                  textTransform: 'capitalize',
                   cursor: 'pointer',
-                  color: activeSubTab === tab ? '#2563EB' : '#64748B',
-                  borderBottom: activeSubTab === tab ? '2px solid #2563EB' : '2px solid transparent'
+                  color: activeSubTab === tab.id ? '#2563EB' : '#64748B',
+                  borderBottom: activeSubTab === tab.id ? '2px solid #2563EB' : '2px solid transparent',
+                  transition: 'all 0.15s ease'
                 }}
               >
-                {tab}
+                {tab.label}
               </span>
             ))}
           </div>
 
           {/* Tab Content */}
           {activeSubTab === 'overview' && (
-            <div>
-              <div style={{ marginBottom: '1.25rem' }}>
-                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.35rem' }}>Overview</h3>
-                <p style={{ color: '#64748B', fontSize: '0.875rem', lineHeight: '1.6' }}>
-                  {resource.description}
-                </p>
-              </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.1rem' }}>
+              <p style={{ fontSize: '0.875rem', color: '#475569', lineHeight: '1.6', margin: 0 }}>
+                {resource.description}
+              </p>
 
-              {/* Key Features */}
-              <div style={{ marginBottom: '1.5rem' }}>
-                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.65rem' }}>Key Features</h3>
+              <div>
+                <h3 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.5rem' }}>Key Capabilities & Research Focus</h3>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
-                  {resource.keyFeatures?.map((feat, i) => (
-                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.8125rem', color: '#334155' }}>
-                      <CheckCircle2 size={16} color="#10B981" />
-                      <span>{feat}</span>
+                  {(Array.isArray(resource.keyFeatures) ? resource.keyFeatures : (resource.specs?.split(',') || [])).map((feat, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8125rem', color: '#334155' }}>
+                      <CheckCircle2 size={14} color="#10B981" />
+                      <span>{feat.trim()}</span>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Capacity & Dates Table */}
-              <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '1rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', fontSize: '0.8125rem' }}>
-                <div>
-                  <span style={{ color: '#64748B' }}>Capacity:</span> <strong style={{ color: '#0F172A' }}>{resource.capacity} Students</strong>
-                </div>
-                <div>
-                  <span style={{ color: '#64748B' }}>Available Seats:</span> <strong style={{ color: '#10B981' }}>{resource.seatsAvailable}</strong>
-                </div>
-                <div>
-                  <span style={{ color: '#64748B' }}>Available Dates:</span> <strong style={{ color: '#0F172A' }}>{resource.availableDates}</strong>
-                </div>
-                <div>
-                  <span style={{ color: '#64748B' }}>Time Slots:</span> <strong style={{ color: '#0F172A' }}>{resource.timeSlots}</strong>
-                </div>
+              <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '0.85rem', fontSize: '0.8125rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <div>👥 <strong>Max Batch Capacity:</strong> {resource.capacity} Students</div>
+                <div>⏱️ <strong>Available Daily Slots:</strong> {resource.timeSlots || '10:00 AM - 1:00 PM, 2:00 PM - 5:00 PM'}</div>
+                <div>🏢 <strong>Cluster Host:</strong> {resource.institutionName}</div>
               </div>
             </div>
           )}
 
           {activeSubTab === 'equipment' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 700 }}>Installed Equipment & Hardware</h3>
-              {resource.equipment?.map((eq, i) => (
-                <div key={i} style={{ padding: '0.75rem', backgroundColor: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0', display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.85rem' }}>
-                  <Cpu size={16} color="#2563EB" />
-                  <span style={{ fontWeight: 600 }}>{eq}</span>
-                </div>
-              ))}
+              <div style={{ padding: '0.75rem', backgroundColor: '#EFF6FF', borderRadius: '8px', border: '1px solid #BFDBFE', fontSize: '0.8125rem', color: '#1E40AF' }}>
+                ⚙️ Industrial equipment maintained under cluster cross-institutional calibration protocols.
+              </div>
+              <ul style={{ margin: 0, paddingLeft: '1.25rem', fontSize: '0.875rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                {(Array.isArray(resource.equipment) ? resource.equipment : (resource.specs?.split(',') || [])).map((eq, i) => (
+                  <li key={i}>{eq.trim()}</li>
+                ))}
+              </ul>
             </div>
           )}
 
@@ -185,23 +216,122 @@ export const ResourceDetail = () => {
                   👨‍🏫
                 </div>
                 <div>
-                  <div style={{ fontWeight: 700, fontSize: '1rem' }}>{resource.trainerName}</div>
+                  <div style={{ fontWeight: 700, fontSize: '1rem' }}>{resource.trainerName || 'Dr. K. R. Joshi (Lead Incharge)'}</div>
                   <div style={{ fontSize: '0.75rem', color: '#64748B' }}>Assigned Lead Cluster Instructor</div>
                 </div>
               </div>
-              <p style={{ fontSize: '0.8125rem', color: '#475569', lineHeight: '1.5' }}>
+              <p style={{ fontSize: '0.8125rem', color: '#475569', lineHeight: '1.5', margin: 0 }}>
                 Available on site to supervise industrial arms, oversee code uploads, and guide research project methodologies.
               </p>
             </div>
           )}
 
           {activeSubTab === 'reviews' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', fontWeight: 700 }}>
-                <Star size={20} color="#F59E0B" fill="#F59E0B" />
-                <span>{resource.rating} / 5.0</span>
-                <span style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 400 }}>({resource.reviewsCount} student & faculty reviews)</span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              
+              {/* Review Summary Breakdown Widget */}
+              <ReviewSummary 
+                stats={reviewStats} 
+                selectedRatingFilter={ratingFilter}
+                onSelectRatingFilter={setRatingFilter}
+                targetType="resource"
+              />
+
+              {/* Action & Filter Header */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '0.75rem', borderBottom: '1px solid #E2E8F0', paddingBottom: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '0.8125rem', fontWeight: 700, color: '#334155' }}>
+                    Showing {reviews.length} of {reviewStats.totalReviews} {reviewStats.totalReviews === 1 ? 'Review' : 'Reviews'}
+                  </span>
+                  {ratingFilter !== 'all' && (
+                    <button
+                      onClick={() => setRatingFilter('all')}
+                      title="Click to reset filter and show all ratings"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        fontSize: '0.75rem',
+                        color: '#1D4ED8',
+                        backgroundColor: '#EFF6FF',
+                        border: '1px solid #BFDBFE',
+                        padding: '0.15rem 0.55rem',
+                        borderRadius: '9999px',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      <span>Filtered: {ratingFilter}★</span>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 800 }}>✕</span>
+                    </button>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.78rem', color: '#64748B', fontWeight: 600 }}>
+                    <span>Sort:</span>
+                    <select
+                      value={sortMode}
+                      onChange={(e) => setSortMode(e.target.value)}
+                      style={{ padding: '0.35rem 0.65rem', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '0.78rem', outline: 'none', backgroundColor: '#FFFFFF' }}
+                    >
+                      <option value="recent">Most Recent</option>
+                      <option value="highest">Highest Rated</option>
+                      <option value="lowest">Lowest Rated</option>
+                      <option value="helpful">Most Helpful</option>
+                    </select>
+                  </div>
+
+                  <button
+                    onClick={() => { setEditingReview(null); setShowReviewModal(true); }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.35rem',
+                      padding: '0.45rem 0.95rem',
+                      backgroundColor: '#2563EB',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      borderRadius: '6px',
+                      fontSize: '0.8125rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)'
+                    }}
+                  >
+                    <Plus size={14} />
+                    <span>Write Review</span>
+                  </button>
+                </div>
               </div>
+
+              {/* Reviews List */}
+              {reviews.length === 0 ? (
+                <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '2.5rem', textAlign: 'center' }}>
+                  <MessageSquare size={32} color="#94A3B8" style={{ margin: '0 auto 0.5rem' }} />
+                  <h4 style={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A', marginBottom: '0.25rem' }}>No reviews yet</h4>
+                  <p style={{ fontSize: '0.8125rem', color: '#64748B', marginBottom: '1rem' }}>Be the first to share your experience with this facility!</p>
+                  <button
+                    onClick={() => { setEditingReview(null); setShowReviewModal(true); }}
+                    style={{ padding: '0.5rem 1.25rem', backgroundColor: '#2563EB', color: '#FFFFFF', border: 'none', borderRadius: '6px', fontSize: '0.8125rem', fontWeight: 600, cursor: 'pointer' }}
+                  >
+                    Write a Review
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  {reviews.map(rev => (
+                    <ReviewCard
+                      key={rev.id}
+                      review={rev}
+                      onEdit={(r) => { setEditingReview(r); setShowReviewModal(true); }}
+                      onDeleted={() => fetchReviews(resource.id)}
+                    />
+                  ))}
+                </div>
+              )}
+
             </div>
           )}
         </div>
@@ -272,6 +402,17 @@ export const ResourceDetail = () => {
           </form>
         </div>
       </div>
+
+      {/* Review Modal */}
+      <ReviewModal
+        isOpen={showReviewModal}
+        onClose={() => { setShowReviewModal(false); setEditingReview(null); }}
+        targetType="resource"
+        targetId={resource.id}
+        targetTitle={resource.title}
+        existingReview={editingReview}
+        onReviewSubmitted={() => fetchReviews(resource.id)}
+      />
     </div>
   );
 };

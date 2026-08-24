@@ -897,6 +897,38 @@ const initialSeed = {
       skills: ["LoRaWAN", "ESP32", "MQTT Telemetry", "PCB Assembly"],
       badgeIcon: "🌐",
       verifiedCount: 9
+    },
+    {
+      id: "cert_4",
+      certCode: "CLUSTER-CERT-5529-SEMI",
+      title: "Cleanroom Nanofabrication & Bio-MEMS Specialist",
+      issuerInstitutionId: "inst_3",
+      issuerInstitutionName: "Vishwakarma Institute of Technology",
+      recipientUserId: "user_student_3",
+      recipientName: "Siddharth Deshmukh",
+      recipientInstitution: "VJTI Mumbai",
+      issueDate: "2025-08-02",
+      expiryDate: "2028-08-02",
+      grade: "Honors (Score: 96%)",
+      skills: ["Photolithography", "Thin Film Deposition", "Cleanroom Class 100", "Micro-Sensors"],
+      badgeIcon: "🔬",
+      verifiedCount: 16
+    },
+    {
+      id: "cert_5",
+      certCode: "CLUSTER-CERT-9104-EV",
+      title: "Autonomous EV Powertrain & CAN Telemetry Architect",
+      issuerInstitutionId: "inst_6",
+      issuerInstitutionName: "Pune Institute of Computer Technology",
+      recipientUserId: "user_student_1",
+      recipientName: "Rahul Sharma",
+      recipientInstitution: "GEC Nashik",
+      issueDate: "2025-08-10",
+      expiryDate: "2028-08-10",
+      grade: "Distinction (Score: 93%)",
+      skills: ["BMS Algorithms", "CAN-bus Protocol", "Simulink Powertrain", "Vector CANoe"],
+      badgeIcon: "🚗",
+      verifiedCount: 11
     }
   ],
 
@@ -1039,7 +1071,8 @@ const initialSeed = {
       description: "Bosch Mobility extended placement offer of ₹22.0 LPA to Anjali Patil (COEP).",
       timestamp: "2025-08-14T14:45:00.000Z"
     }
-  ]
+  ],
+  reviews: []
 };
 
 function seed() {
