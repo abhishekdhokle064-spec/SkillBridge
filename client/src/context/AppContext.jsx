@@ -14,7 +14,24 @@ export const AppProvider = ({ children }) => {
   const [isLandingView, setIsLandingView] = useState(false);
   const [selectedResourceId, setSelectedResourceId] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsedState] = useState(() => {
+    try {
+      return localStorage.getItem('skillbridge_sidebar_collapsed') === 'true';
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const setSidebarCollapsed = (val) => {
+    setSidebarCollapsedState(prev => {
+      const nextVal = typeof val === 'function' ? val(prev) : val;
+      try {
+        localStorage.setItem('skillbridge_sidebar_collapsed', String(nextVal));
+      } catch (e) {}
+      return nextVal;
+    });
+  };
+
   const [globalSearchQuery, setGlobalSearchQuery] = useState('');
   const [activeCluster, setActiveCluster] = useState('Western Maharashtra Innovation Cluster');
   const [studentInterest, setStudentInterestState] = useState(() => {
@@ -33,7 +50,7 @@ export const AppProvider = ({ children }) => {
   };
 
   const toggleMenu = () => {
-    if (window.innerWidth < 900) {
+    if (typeof window !== 'undefined' && window.innerWidth <= 992) {
       setMobileMenuOpen(prev => !prev);
     } else {
       setSidebarCollapsed(prev => !prev);

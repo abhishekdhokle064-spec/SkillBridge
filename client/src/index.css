@@ -102,6 +102,57 @@ body {
   width: 68px;
 }
 
+.cluster-sidebar.collapsed .sidebar-brand {
+  padding: 1.25rem 0.5rem;
+  justify-content: center;
+}
+
+.cluster-sidebar.collapsed .sidebar-nav {
+  padding: 1.1rem 0.4rem;
+  align-items: center;
+}
+
+.cluster-sidebar.collapsed .nav-item-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  margin: 0 auto;
+}
+
+.cluster-sidebar.collapsed .nav-item-left {
+  justify-content: center;
+  width: 100%;
+  gap: 0;
+}
+
+.cluster-sidebar.collapsed .nav-item-left span {
+  display: none;
+}
+
+.cluster-sidebar.collapsed .badge-counter {
+  display: none;
+}
+
+.cluster-sidebar.collapsed .sidebar-footer {
+  padding: 1rem 0.4rem;
+  display: flex;
+  justify-content: center;
+}
+
+.cluster-sidebar.collapsed .logout-btn {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.cluster-sidebar.collapsed .logout-btn span {
+  display: none;
+}
+
 .sidebar-overlay {
   display: none;
   position: fixed;
