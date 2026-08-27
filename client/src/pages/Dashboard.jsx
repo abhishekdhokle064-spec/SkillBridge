@@ -17,7 +17,8 @@ import {
   Sparkles,
   ChevronRight,
   Star,
-  MessageSquare
+  MessageSquare,
+  Compass
 } from 'lucide-react';
 
 export const Dashboard = () => {
@@ -121,6 +122,64 @@ export const Dashboard = () => {
             <circle cx="210" cy="120" r="3" fill="#FBBF24" />
           </svg>
         </div>
+      </div>
+
+      {/* Smart Skill Advisor Feature Highlight Banner */}
+      <div 
+        style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #BFDBFE',
+          borderRadius: '14px',
+          padding: '1.25rem 1.5rem',
+          boxShadow: 'var(--shadow-sm)',
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          background: 'linear-gradient(135deg, #FFFFFF 0%, #EFF6FF 100%)'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1, minWidth: '280px' }}>
+          <div style={{ width: '48px', height: '48px', borderRadius: '12px', backgroundColor: '#2563EB', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 4px 12px rgba(37, 99, 235, 0.25)' }}>
+            <Compass size={24} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.2rem' }}>
+              <span style={{ fontSize: '0.72rem', backgroundColor: '#DBEAFE', color: '#1D4ED8', fontWeight: 800, padding: '0.15rem 0.5rem', borderRadius: '9999px' }}>
+                AI SKILL ADVISOR
+              </span>
+              <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                Smart Skill Advisor & Gap Detector
+              </h3>
+            </div>
+            <p style={{ fontSize: '0.8125rem', color: '#475569', margin: 0 }}>
+              Diagnose technical skill gaps against live industry benchmarks and get your personalized learning roadmap.
+            </p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setActiveTab('skill_advisor')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.6rem 1.25rem',
+            backgroundColor: '#2563EB',
+            color: '#FFFFFF',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '0.8125rem',
+            fontWeight: 700,
+            cursor: 'pointer',
+            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.3)',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          <span>Launch Skill Advisor</span>
+          <ArrowRight size={15} />
+        </button>
       </div>
 
       {/* 2. KPI Stat Cards Row (5 Cards) */}

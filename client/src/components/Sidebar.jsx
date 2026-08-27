@@ -15,7 +15,8 @@ import {
   User, 
   Settings, 
   LogOut,
-  X
+  X,
+  Compass
 } from 'lucide-react';
 
 export const Sidebar = () => {
@@ -34,6 +35,7 @@ export const Sidebar = () => {
     { id: 'resources', label: 'Explore Resources', icon: Search, badge: null },
     { id: 'bookings', label: 'My Bookings', icon: Calendar, badge: null },
     { id: 'trainings', label: 'My Trainings', icon: BookOpen, badge: null },
+    { id: 'skill_advisor', label: 'Smart Skill Advisor', icon: Compass, badge: 'AI' },
     { id: 'internships', label: 'Internships', icon: Briefcase, badge: null },
     { id: 'placements', label: 'Placement', icon: Building2, badge: null },
     { id: 'certificates', label: 'Certificates', icon: Award, badge: null },

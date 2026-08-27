@@ -17,6 +17,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { SettingsPage } from './pages/SettingsPage';
 import { MessagesPage } from './pages/MessagesPage';
 import { ReviewsPage } from './pages/ReviewsPage';
+import { SmartSkillAdvisor } from './pages/SmartSkillAdvisor';
 import { HackathonDemoBar } from './components/HackathonDemoBar';
 import { CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -69,6 +70,8 @@ export default function App() {
         return <MyBookings />;
       case 'trainings':
         return <MyTrainings />;
+      case 'skill_advisor':
+        return <SmartSkillAdvisor />;
       case 'internships':
         return <InternshipPortal />;
       case 'placements':

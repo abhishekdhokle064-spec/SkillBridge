@@ -17,6 +17,20 @@ export const AppProvider = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [globalSearchQuery, setGlobalSearchQuery] = useState('');
   const [activeCluster, setActiveCluster] = useState('Western Maharashtra Innovation Cluster');
+  const [studentInterest, setStudentInterestState] = useState(() => {
+    try {
+      return localStorage.getItem('skillbridge_student_interest') || 'All';
+    } catch (e) {
+      return 'All';
+    }
+  });
+
+  const setStudentInterest = (interest) => {
+    setStudentInterestState(interest);
+    try {
+      localStorage.setItem('skillbridge_student_interest', interest);
+    } catch (e) {}
+  };
 
   const toggleMenu = () => {
     if (window.innerWidth < 900) {
@@ -144,6 +158,8 @@ export const AppProvider = ({ children }) => {
         switchRole,
         activeCluster,
         setActiveCluster,
+        studentInterest,
+        setStudentInterest,
         refreshData: loadInitialData
       }}
     >
